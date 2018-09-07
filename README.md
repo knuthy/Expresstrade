@@ -11,7 +11,8 @@ One account can hold unlimited amounts of digital items, so it's no longer requi
 - [Node.js](https://nodejs.org/en/) and NPM for managing packages  
 I suggest using Node.js 8.9.4 or higher for the best possible stability and package support
 
-- [Socket.io](https://socket.io/) (Or other communication library, if you prefer that)
+- [Socket.io](https://socket.io/) (Or other real-time engine, if you prefer that)
+
 
 
 
