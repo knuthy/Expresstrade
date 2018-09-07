@@ -8,6 +8,8 @@ Throughout this tutorial, we'll be using the following:
 - At least one [Opskins account](https://opskins.com/?loc=login&register) with a registered API key.  
 One account can hold unlimited amounts of digital items, so it's no longer required to have one account per 1000 items, as it was when Steam bots were required to run an online trading and or gambling platform. It still might be a good idea to have more than one bot account, to improve server performance.
 
+- [NodeJS](https://nodejs.org/en/) and NPM for managing packages  
+I suggest using NodeJS 8.9.4 or higher for the best possible stability and package support  
 
 
 
