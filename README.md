@@ -13,6 +13,10 @@ I suggest using Node.js 8.9.4 or higher for the best possible stability and pack
 
 - [Socket.io](https://socket.io/) (Or other real-time engine, if you prefer that)
 
+- The following Node.js modules:
+  - Express
+  - Axios
+
 
 
 
