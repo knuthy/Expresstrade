@@ -8,10 +8,10 @@ socket.on('loadUserInventory', function(forceRefresh) {
 	var inventoryCache;
 	
 	// Is the user's inventory already cached?
-	cachedInventories.forEach(function(inv) {
+	cachedInventories.forEach(function(inventory) {
 		if (inv.steamId == socketuser.id64) {
 			cache = true;
-			inventoryCache = inv;
+			inventoryCache = inventory.inv;
 		}
 	});
 	
