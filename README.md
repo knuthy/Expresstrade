@@ -15,10 +15,18 @@ I suggest using Node.js 8.9.4 or higher for the best possible stability and pack
 
 - The following Node.js modules:
   - [Express](https://www.npmjs.com/package/express)
-  - [Axios](https://www.npmjs.com/package/axios)
+  - [Expresstrade](https://www.npmjs.com/package/expresstrade)
+
+- [Trade.opskins.com]https://github.com/OPSkins/trade-opskins-api API documentation
 
 ## Server basics
+Before we're getting into handling the API and start sending requests, we'll need a basic and stable Node.js server.  
+I recommend running it over https, with a free ssl certificate from [Letsencrypt](https://letsencrypt.org/). If you prefer running it non-secure for some reason, or dont wanna register a certificate, you can just run a simple http server.
 
+Below is my example of a simple and basic secure Node.js server.
+````javascript
+lets
+´´´´
 
 
 
