@@ -162,34 +162,36 @@ socket.on('loadUserInventory', function() {
 	});
 });
 
-// Own inventory. Notice that loading our own inventory is not done from a socket request, just as a demonstration. This can always be done, if you want your user to be able to load you inventory.
-ET.IUser.GetInventory((err, body) => {
-	if (err) {
-		return;
-	} else {
-		if (body.status == 1) {
-			// Inventory loaded successfully
-			var inventory = [];
-			body.response.items.forEach(function(item) {
-				inventory.push({
-					id: item.id,
-					category: item.category,
-					name: item.name,
-					img: item.image['600px'],
-					color: item.color,
-					price: item.suggested_price
-				});
-			});
-			socket.emit('ownInventory', {
-				content: inventory
-			});
+// Own inventory. 
+socket.on('loadBotInventory', function() {
+	ET.IUser.GetInventory((err, body) => {
+		if (err) {
+			return;
 		} else {
-			// Inventory could not load
-			socket.emit('error', {
-				content: 'INVENTORY_COULD_NOT_LOAD'
-			});
+			if (body.status == 1) {
+				// Inventory loaded successfully
+				var inventory = [];
+				body.response.items.forEach(function(item) {
+					inventory.push({
+						id: item.id,
+						category: item.category,
+						name: item.name,
+						img: item.image['600px'],
+						color: item.color,
+						price: item.suggested_price
+					});
+				});
+				socket.emit('botInventory', {
+					content: inventory
+				});
+			} else {
+				// Inventory could not load
+				socket.emit('error', {
+					content: 'INVENTORY_COULD_NOT_LOAD'
+				});
+			}
 		}
-	}
+	});
 });
 ```
 If wanted, you can always filter inventory objects, based on either an item's name or price.
