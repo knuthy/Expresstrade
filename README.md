@@ -93,7 +93,7 @@ app.get('/auth/opskins/authenticate', passport.authenticate('custom', {
 ```
 The routes leading to the authentication code above, means that you must redirect your user to "YOURDOMAIN.COM/auth/opskins", to make it possible for them, to send a login request.
 
-## Inventories
+## Inventories and caching
 When you've created the basics of your website, with WAX Expresstrade integrated, you probably want to load either your own, your user's or both inventories.  
 Depending on how often you want to load an inventory, it might be a good idea to store each load as a cache, to reduce stress, improve loadtime and minimize the chances of a network request cooldown.  
 This can be stored either in a database, or in a simple object array, or a more advanced in-memory data structure, such as [Redis](https://redis.io/).
