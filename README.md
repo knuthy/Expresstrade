@@ -100,3 +100,6 @@ This can be stored either in a database, or in a simple object array, or a more 
 
 Below is demonstrated the basics of how to load inventories.  
 In [inventories.js](#inventories.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
+```javascript
+
+```
