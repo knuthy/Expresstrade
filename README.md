@@ -21,7 +21,7 @@ I suggest using Node.js 8.9.4 or higher for the best possible stability and pack
   - [Passport-custom](https://www.npmjs.com/package/passport-custom)
   - [Fs](https://www.npmjs.com/package/file-system)
 
-- [Trade.opskins.com]https://github.com/OPSkins/trade-opskins-api API documentation
+- [Trade.opskins.com](https://github.com/OPSkins/trade-opskins-api) API documentation
 
 ## Server basics
 Before we're getting into handling the API and start sending requests, we'll need a basic and stable Node.js server.  
