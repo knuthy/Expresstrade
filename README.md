@@ -228,3 +228,31 @@ socket.on('sendTrade', function() {
 });
 ```
 You can always add a custom message to the tradeoffer. This can be used for security measures.
+
+We will always receive a message when one of our tradeoffer changes.
+A tradeoffer can have the following states:
+- offerSent
+- offerAccepted
+- offerExpired
+- offerCancelled
+- offerDeclined
+- offerNoLongerValid
+
+Every offer will always consist of a [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Below is an example of how to handle a sent tradeoffer, that has been accepted
+```javascript
+ET.on('offerAccepted', offer => {
+	// Handle the data however you would like
+	console.log(`Tradeoffer: offer.id has been accepted`);
+});
+```
+We can also always receive tradeoffers, and handle them.  
+Below is an example of how to cancel all incoming tradeoffers.
+```javascript
+ET.on('offerReceived', (_offer) => {
+  console.log(_offer.id)
+ 
+  ET.ITrade.CancelOffer({offer_id: _offer.id})
+});
+```
