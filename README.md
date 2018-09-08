@@ -49,6 +49,7 @@ Below is the commopn way to do so.
 ```javascript
 // Our special modules
 const ExpressTrade = require('expresstrade');
+const passport = require('passport');
 const CustomStrategy = require('passport-custom');
 const opAuth = require('opskins-oauth');
 
