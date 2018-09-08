@@ -130,7 +130,7 @@ In [inventories.js](#inventories.js) is demonstrated how to load and cache inven
 Please noitice that the examples below, use custom socket connection variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
 Notice also, that we access the user's Steam 64 ID by calling "socketuser.id64".
 ```javascript
-// User inventory
+// User inventory, as from a user socket request.
 socket.on('loadUserInventory', function() {
 	ET.ITrade.GetUserInventoryFromSteamId({steam_id: socketuser.id64}, (err, body) => {
 		if (err) {
@@ -162,38 +162,65 @@ socket.on('loadUserInventory', function() {
 	});
 });
 
-// Own inventory
-socket.on('loadOwnInventory', function() {
-	ET.IUser.GetInventory((err, body) => {
-		if (err) {
-			return;
+// Own inventory. Notice that loading our own inventory is not done from a socket request, just as a demonstration. This can always be done, if you want your user to be able to load you inventory.
+ET.IUser.GetInventory((err, body) => {
+	if (err) {
+		return;
+	} else {
+		if (body.status == 1) {
+			// Inventory loaded successfully
+			var inventory = [];
+			body.response.items.forEach(function(item) {
+				inventory.push({
+					id: item.id,
+					category: item.category,
+					name: item.name,
+					img: item.image['600px'],
+					color: item.color,
+					price: item.suggested_price
+				});
+			});
+			socket.emit('ownInventory', {
+				content: inventory
+			});
 		} else {
-			if (body.status == 1) {
-				// Inventory loaded successfully
-				var inventory = [];
-				body.response.items.forEach(function(item) {
-					inventory.push({
-						id: item.id,
-						category: item.category,
-						name: item.name,
-						img: item.image['600px'],
-						color: item.color,
-						price: item.suggested_price
-					});
-				});
-				socket.emit('ownInventory', {
-					content: inventory
-				});
-			} else {
-				// Inventory could not load
-				socket.emit('error', {
-					content: 'INVENTORY_COULD_NOT_LOAD'
-				});
-			}
+			// Inventory could not load
+			socket.emit('error', {
+				content: 'INVENTORY_COULD_NOT_LOAD'
+			});
 		}
-	});
+	}
 });
 ```
 If wanted, you can always filter inventory objects, based on either an item's name or price.
 
 ## Sending and receiving tradeoffers
+When you've loaded either you own, your user's or both inventories, you might want to either send a tradeoffer, containing items from one or both sides, or be able to receive a tradeoffer from a user.  
+When sending an offer, you need to know which item ids you want to include. These ids could be the ones we fetched in the inventory loading step.  
+You might want your user to be able to choose between which of their and or your items, to be added to the tradeoffer you're sending. No matter how you delcare the item ids, both your and the recipient item ids should be stored in the same array.
+
+In the code below, I've made a random array of item ids, just to demonstrate how to send a tradeoffer.
+Please agaon noitice that the examples below, use custom socket connection variables, such as 'tradeSent' and 'error'. You will of course need to customize these variables to work together with your clientside.  
+Notice also, that we again access the user's Steam 64 ID by calling "socketuser.id64".  
+```javascript
+var items = [12, 34, 56, 78, 90];
+ET.ITrade.SendOfferToSteamId({steam_id: socketuser.id64, items: items.toString(), message: 'Knuthy'}, (err, body) => {
+	if (err) {
+		return;
+	} else {
+		if (body.status == 1) {
+			// Trade sent successfully
+			socket.emit('tradeSent', {
+				id: body.response.offer.id,
+				items: items
+			});
+		} else {
+			// Trade could not be sent
+			socket.emit('error', {
+				content: 'INVENTORY_COULD_NOT_LOAD'
+			});
+		}
+	}
+});
+```
+You can always add a custom message to the tradeoffer. This can be used for security measures.
