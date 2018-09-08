@@ -110,6 +110,8 @@ io.on('connection', socket => {
 	}
 });
 ```
+We can now throughout the user's session, receive their data by fetching the variable "user".  
+If the user wants to make a request, we can send their data to the Opskins Trade API.
 
 ## Inventories and caching
 When you've created the basics of your website, with WAX Expresstrade integrated, you probably want to load either your own, your user's or both inventories.  
@@ -119,5 +121,67 @@ This can be stored either in a database, or in a simple object array, or a more 
 Below is demonstrated the basics of how to load inventories.  
 In [inventories.js](#inventories.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
 ```javascript
+// User inventory
+socket.on('loadUserInventory', function() {
+	ET.ITrade.GetUserInventoryFromSteamId({steam_id: steamid}, (err, body) => {
+		if (err) {
+			cb(err);
+		} else {
+			if (body.status == 1) {
+				// Inventory loaded successfully
+				var inventory = [];
+				body.response.items.forEach(function(item) {
+					inventory.push({
+						id: item.id,
+						category: item.category,
+						name: item.name,
+						img: item.image['600px'],
+						color: item.color,
+						price: item.suggested_price
+					});
+				});
+				socket.emit('userInventory', {
+					content: inventory
+				});
+			} else {
+				// Inventory could not load
+				socket.emit('error', {
+					content: 'INVENTORY_COULD_NOT_LOAD'
+				});
+			}
+		}
+	});
+});
 
+// Own inventory
+socket.on('loadOwnInventory', function() {
+	ET.IUser.GetInventory((err, body) => {
+		if (err) {
+			cb(err);
+		} else {
+			if (body.status == 1) {
+				// Inventory loaded successfully
+				var inventory = [];
+				body.response.items.forEach(function(item) {
+					inventory.push({
+						id: item.id,
+						category: item.category,
+						name: item.name,
+						img: item.image['600px'],
+						color: item.color,
+						price: item.suggested_price
+					});
+				});
+				socket.emit('ownInventory', {
+					content: inventory
+				});
+			} else {
+				// Inventory could not load
+				socket.emit('error', {
+					content: 'INVENTORY_COULD_NOT_LOAD'
+				});
+			}
+		}
+	});
+});
 ```
