@@ -45,7 +45,7 @@ var io = require('socket.io').listen(server);
 ## Configuring Expresstrade and Opskins user authentication
 To be able to fetch user data, and send requests using the Opskins Trade API, we'll need to configure both the Express trade service and the Opskins user authentication API.
 
-Below is how I would do so.
+Below is the commopn way to do so.
 ```javascript
 // Our special modules
 const ExpressTrade = require('expresstrade');
@@ -93,6 +93,7 @@ app.get('/auth/opskins/authenticate', passport.authenticate('custom', {
 ```
 The routes leading to the authentication code above, means that you must redirect your user to "YOURDOMAIN.COM/auth/opskins", to make it possible for them, to send a login request.
 
-## Configuring Expresstrade and Opskins user authentication
+## Inventories
+
 
 
