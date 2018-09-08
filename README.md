@@ -121,7 +121,7 @@ This can be stored either in a database, or in a simple object array, or a more 
 Below is demonstrated the basics of how to load inventories.  
 In [inventories.js](#inventories.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
 
-Pleasenoitice that the examples below, use custom socket connection variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
+Please noitice that the examples below, use custom socket connection variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
 Notice also, that we access the user's Steam 64 ID by calling "socketuser.id64".
 ```javascript
 // User inventory
