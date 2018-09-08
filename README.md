@@ -46,7 +46,7 @@ var io = socket.listen(server);
 ## Configuring Expresstrade and Opskins user authentication
 To be able to fetch user data, and send requests using the Opskins Trade API, we'll need to configure both the Express trade service and the Opskins user authentication API.
 
-Below is the commopn way to do so.
+Below is the easiest way to do so.
 ```javascript
 // Our special modules
 const ExpressTrade = require('expresstrade');
@@ -92,6 +92,11 @@ app.get('/auth/opskins/authenticate', passport.authenticate('custom', {
 }), function (req, res) {
 	res.redirect('/');
 });
+// We also want the user to be able to logout again.
+app.get('/logout', (req, res) => {
+	req.logout();
+	res.redirect('/');
+});
 ```
 The routes leading to the authentication code above, means that you must redirect your user to "YOURDOMAIN.COM/auth/opskins", to make it possible for them, to send a login request.
 
@@ -111,7 +116,8 @@ io.on('connection', socket => {
 });
 ```
 We can now throughout the user's session, receive their data by fetching the variable "user".  
-If the user wants to make a request, we can send their data to the Opskins Trade API.
+If the user wants to make a request, we can send their data to the Opskins Trade API.  
+All user-action-based code must be placed within the socket connection.
 
 ## Inventories and caching
 When you've created the basics of your website, with WAX Expresstrade integrated, you probably want to load either your own, your user's or both inventories.  
@@ -188,3 +194,6 @@ socket.on('loadOwnInventory', function() {
 	});
 });
 ```
+If wanted, you can always filter inventory objects, based on either an item's name or price.
+
+## Sending and receiving tradeoffers
