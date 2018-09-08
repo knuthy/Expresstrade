@@ -92,6 +92,10 @@ app.get('/auth/opskins/authenticate', passport.authenticate('custom', {
 }), function (req, res) {
 	res.redirect('/');
 });
+// Our home, making it possible to fetch userdata from the clientside.
+app.get('/', function (req, res) {
+    // Send res.user information. Example: res.end('info');
+});
 // We also want the user to be able to logout again.
 app.get('/logout', (req, res) => {
 	req.logout();
