@@ -129,7 +129,7 @@ Depending on how often you want to load an inventory, it might be a good idea to
 This can be stored either in a database, or in a simple object array, or a more advanced in-memory data structure, such as [Redis](https://redis.io/).
 
 Below is demonstrated the basics of how to load inventories.  
-In [inventories.js](#inventories.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
+In [inventories_cache.js](#inventories_cache.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
 
 Please noitice that the examples below, use custom socket connection variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
 Notice also, that we access the user's Steam 64 ID by calling "socketuser.id64".
