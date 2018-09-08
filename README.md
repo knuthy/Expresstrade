@@ -24,7 +24,7 @@ Before we're getting into handling the API and start sending requests, we'll nee
 I recommend running it over https, with a free ssl certificate from [Letsencrypt](https://letsencrypt.org/). If you prefer running it non-secure for some reason, or dont wanna register a certificate, you can just run a simple http server.
 
 Below is my example of a simple and basic secure Node.js server.
-````javascript
+```javascript
 var https = require('https');
 
 // Server listen and ssl 
@@ -35,7 +35,7 @@ var server = https.createServer({
 },app);
 server.listen(3000);
 var io = require('socket.io').listen(server);
-´´´´
+```
 
 
 
