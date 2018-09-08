@@ -1,3 +1,6 @@
+// This example is for user inventories. The same can be done with bot accounts. 
+// Modifing the clearInventory function will make it possible to do it all in one.
+
 var cachedInventories = [];
 
 socket.on('loadUserInventory', function(forceRefresh) {
