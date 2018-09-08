@@ -162,7 +162,7 @@ socket.on('loadUserInventory', function() {
 	});
 });
 
-// Own inventory. 
+// Own inventory, as from a user socket request.
 socket.on('loadBotInventory', function() {
 	ET.IUser.GetInventory((err, body) => {
 		if (err) {
@@ -206,23 +206,25 @@ Please agaon noitice that the examples below, use custom socket connection varia
 Notice also, that we again access the user's Steam 64 ID by calling "socketuser.id64".  
 ```javascript
 var items = [12, 34, 56, 78, 90];
-ET.ITrade.SendOfferToSteamId({steam_id: socketuser.id64, items: items.toString(), message: 'Knuthy'}, (err, body) => {
-	if (err) {
-		return;
-	} else {
-		if (body.status == 1) {
-			// Trade sent successfully
-			socket.emit('tradeSent', {
-				id: body.response.offer.id,
-				items: items
-			});
+socket.on('sendTrade', function() {
+	ET.ITrade.SendOfferToSteamId({steam_id: socketuser.id64, items: items.toString(), message: 'Knuthy'}, (err, body) => {
+		if (err) {
+			return;
 		} else {
-			// Trade could not be sent
-			socket.emit('error', {
-				content: 'INVENTORY_COULD_NOT_LOAD'
-			});
+			if (body.status == 1) {
+				// Trade sent successfully
+				socket.emit('tradeSent', {
+					id: body.response.offer.id,
+					items: items
+				});
+			} else {
+				// Trade could not be sent
+				socket.emit('error', {
+					content: 'INVENTORY_COULD_NOT_LOAD'
+				});
+			}
 		}
-	}
+	});
 });
 ```
 You can always add a custom message to the tradeoffer. This can be used for security measures.
