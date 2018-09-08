@@ -264,7 +264,7 @@ ET.on('offerReceived', (_offer) => {
 
 ## Summary
 You can use the above methods and examples to create a website using WAX Expresstrade, to be able to receive userdata from Opskins and send and receive tradeoffers.  
-[complete.js](#complete.js) contains all the above steps, in one complete version, if you wish to see and or use the structure.
+[complete.js](complete.js) contains all the above steps, in one complete version, if you wish to see and or use the structure.
 
 Error codes can be looked up [here](https://github.com/OPSkins/trade-opskins-api/issues/19#issuecomment-403122935)
 I recommend reading the [Trade.opskins.com](https://github.com/OPSkins/trade-opskins-api) API documentation, if you have any problems regarding the GET and POST requests, or if you wish to do other requests.
