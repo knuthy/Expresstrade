@@ -237,6 +237,7 @@ A tradeoffer can have the following states:
 - offerCancelled
 - offerDeclined
 - offerNoLongerValid
+You can read more about what the tradeoffer states mean [here](https://www.npmjs.com/package/expresstrade#offersent)
 
 Every offer will always consist of a [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
 
