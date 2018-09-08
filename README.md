@@ -129,7 +129,7 @@ Depending on how often you want to load an inventory, it might be a good idea to
 This can be stored either in a database, or in a simple object array, or a more advanced in-memory data structure, such as [Redis](https://redis.io/).
 
 Below is demonstrated the basics of how to load inventories.  
-In [inventories_cache.js](#inventories_cache.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
+In [inventories_cache.js](inventories_cache.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
 
 Please noitice that the examples below, use custom socket connection variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
 Notice also, that we access the user's Steam 64 ID by calling "socketuser.id64".
@@ -266,4 +266,5 @@ ET.on('offerReceived', (_offer) => {
 You can use the above methods and examples to create a website using WAX Expresstrade, to be able to receive userdata from Opskins and send and receive tradeoffers.  
 [complete.js](#complete.js) contains all the above steps, in one complete version, if you wish to see and or use the structure.
 
+Error codes can be looked up [here](https://github.com/OPSkins/trade-opskins-api/issues/19#issuecomment-403122935)
 I recommend reading the [Trade.opskins.com](https://github.com/OPSkins/trade-opskins-api) API documentation, if you have any problems regarding the GET and POST requests, or if you wish to do other requests.
