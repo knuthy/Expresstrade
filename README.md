@@ -80,11 +80,11 @@ passport.use('custom', new CustomStrategy(function (req, done) {
 }));
 
 /* Routes */
-// Redirect the user to the login page.
+// Redirect user to login.
 app.get('/auth/opskins', function (req, res) {
 	res.redirect(OpskinsAuth.getFetchUrl());
 });
-// Authenticate the user when trying to login
+// Authenticate user when trying to login
 app.get('/auth/opskins/authenticate', passport.authenticate('custom', {
 	failureRedirect: '/'
 }), function (req, res) {
