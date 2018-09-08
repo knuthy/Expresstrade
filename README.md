@@ -56,7 +56,7 @@ const opAuth = require('opskins-oauth');
 const ET = new ExpressTrade({
   apikey: 'YOUR_APIKEY',
   twofactorsecret: 'THE_2FA_CODE_TO_THE_SAME_ACCOUNT_AS_THE_APIKEY',
-	pollInterval: 'HOW_OFTEN_YOU_WANT_TO_POLL' // In ms, example "5000".
+  pollInterval: 'HOW_OFTEN_YOU_WANT_TO_POLL' // In ms, example "5000".
 });
 
 // Delcaring basic site info, and creating an Opskins session.
@@ -79,8 +79,7 @@ passport.use('custom', new CustomStrategy(function (req, done) {
     });
 }));
 
-// Routes
-
+/* Routes */
 // Redirect the user to the login page.
 app.get('/auth/opskins', function (req, res) {
 	res.redirect(OpskinsAuth.getFetchUrl());
