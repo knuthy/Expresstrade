@@ -5,8 +5,8 @@ The explanations in this tutorial is also build upon implying, that you have pre
 ## Content
 Throughout this tutorial, we'll be using the following:
 
-- At least one [Opskins account](https://opskins.com/?loc=login&register) with a registered API key.  
-One account can hold unlimited amounts of digital items, so it's no longer required to have one account per 1000 items, as it was when Steam bots were required to run an online trading and or gambling platform. It still might be a good idea to have more than one bot account, to improve server performance.
+- At least one [Opskins account](https://opskins.com/?loc=login&register) with a registered API key, and its 2FA code.  
+One account can hold unlimited amounts of digital items, so it's no longer required to have one account per 1000 items, as it was when Steam bots were required to run an online trading and or gambling platform. It still might be a good idea to have more than one bot account, to improve server performance. This tutorial uses only one account.
 
 - [Node.js](https://nodejs.org/en/) and NPM for managing packages  
 I suggest using Node.js 8.9.4 or higher for the best possible stability and package support
@@ -16,6 +16,9 @@ I suggest using Node.js 8.9.4 or higher for the best possible stability and pack
 - The following Node.js modules:
   - [Express](https://www.npmjs.com/package/express)
   - [Expresstrade](https://www.npmjs.com/package/expresstrade)
+  - [Opskins-OAuth](https://www.npmjs.com/package/opskins-oauth)
+  - [Passport](https://www.npmjs.com/package/passport) 
+  - [Passport-custom](https://www.npmjs.com/package/passport-custom)
   - [Fs](https://www.npmjs.com/package/file-system)
 
 - [Trade.opskins.com]https://github.com/OPSkins/trade-opskins-api API documentation
@@ -39,5 +42,55 @@ server.listen(3000);
 var io = require('socket.io').listen(server);
 ```
 
+## Configuring Expresstrade and Opskins user authentication
+To be able to fetch user data, and send requests using the Opskins Trade API, we'll need to configure both the Express trade service and the Opskins user authentication API.
+
+Below is the common way to do so.
+```javascript
+// Our special modules
+const ExpressTrade = require('expresstrade');
+const CustomStrategy = require('passport-custom');
+const opAuth = require('opskins-oauth');
+
+// Creating a new Expresstrade session
+const ET = new ExpressTrade({
+  apikey: 'YOUR_APIKEY',
+  twofactorsecret: 'THE_2FA_CODE_TO_THE_SAME_ACCOUNT_AS_THE_APIKEY',
+	pollInterval: 'HOW_OFTEN_YOU_WANT_TO_POLL' // In ms, example "5000".
+});
+
+// Delcaring basic site info, and creating an Opskins session.
+let OpskinsAuth = new opAuth.init({
+    name: 'YOUR_SITE_NAME', // Site name displayed to users on logon
+    returnURL: 'http://YOURDOMAIN.COM/auth/opskins/authenticate', // Your return route
+    apiKey: 'YOUR_APIKEY', // OPSkins API key
+    scopes: 'identity deposit withdraw', // Scopes you want to access, read more at https://docs.opskins.com/public/en.html#scopes.
+    mobile: true // Removes login navbar if true
+});
+
+// Authenticating the user
+passport.use('custom', new CustomStrategy(function (req, done) {
+    OpskinsAuth.authenticate(req, (err, user) => {
+        if (err) {
+            done(err);
+        } else {
+            done(null, user);
+        }
+    });
+}));
+
+// Routes
+
+// Redirect the user to the login page.
+app.get('/auth/opskins', function (req, res) {
+	res.redirect(OpskinsAuth.getFetchUrl());
+});
+// Authenticate the user when trying to login
+app.get('/auth/opskins/authenticate', passport.authenticate('custom', {
+	failureRedirect: '/'
+}), function (req, res) {
+	res.redirect('/');
+});
+```
 
 
