@@ -108,7 +108,7 @@ The routes leading to the authentication code above, means that you must redirec
 After our user has logged in, by sending a request to "YOURDOMAIN.COM/auth/opskins", their data has been stored in our passport session, assigned to the socket id they requested the login from.  
 We then need to be able to identify our user troughout the actions we want to perform, based on the socket connection. If we can't identify our user, we cant fetch their data or send any userrelated request to the Opskins Trade API.
 
-So when the user contacts the socket after the login, we'll have to assign their data to their session.
+So when the user contacts the socket after the login, we'll have to assign their data to their session.  
 Below is how I would do so.
 ```javascript
 io.on('connection', socket => {
@@ -261,3 +261,9 @@ ET.on('offerReceived', (_offer) => {
   ET.ITrade.CancelOffer({offer_id: _offer.id})
 });
 ```
+
+## Summary
+You can use the above methods and examples to create a website using WAX Expresstrade, to be able to receive userdata from Opskins and send and receive tradeoffers.  
+[complete.js](#complete.js) contains all the above steps, in one complete version, if you wish to see and or use the structure.
+
+I recommend reading the [Trade.opskins.com](https://github.com/OPSkins/trade-opskins-api) API documentation, if you have any problems regarding the GET and POST requests, or if you wish to do other requests.
