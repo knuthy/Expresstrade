@@ -31,6 +31,7 @@ Below is my example of a basic Node.js server.
 ```javascript
 var https = require('https');
 var fs = require('fs');
+var socket = require('socket.io');
 
 // Server listen and ssl 
 var app = require('express')();
@@ -39,7 +40,7 @@ var server = https.createServer({
     cert: fs.readFileSync('/PATH_TO_YOUR_CHAIN/fullchain.pem')
 },app);
 server.listen(3000);
-var io = require('socket.io').listen(server);
+var io = socket.listen(server);
 ```
 
 ## Configuring Expresstrade and Opskins user authentication
@@ -93,6 +94,22 @@ app.get('/auth/opskins/authenticate', passport.authenticate('custom', {
 });
 ```
 The routes leading to the authentication code above, means that you must redirect your user to "YOURDOMAIN.COM/auth/opskins", to make it possible for them, to send a login request.
+
+## Registering after login
+After our user has logged in, by sending a request to "YOURDOMAIN.COM/auth/opskins", their data has been stored in our passport session, assigned to the socket id they requested the login from.  
+We then need to be able to identify our user troughout the actions we want to perform, based on the socket connection. If we can't identify our user, we cant fetch their data or send any userrelated request to the Opskins Trade API.
+
+So when the user contacts the socket after the login, we'll have to assign their data to their session.
+Below is how I would do so.
+```javascript
+io.on('connection', socket => {
+	var user;
+	// If logged in, assign userdata to socket session variable
+	if (socket.handshake.session.passport && socket.handshake.session.passport.user) {
+		user = socket.handshake.session.passport.user;
+	}
+});
+```
 
 ## Inventories and caching
 When you've created the basics of your website, with WAX Expresstrade integrated, you probably want to load either your own, your user's or both inventories.  
