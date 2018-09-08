@@ -98,5 +98,5 @@ When you've created the basics of your website, with WAX Expresstrade integrated
 Depending on how often you want to load an inventory, it might be a good idea to store each load as a cache, to reduce stress, improve loadtime and minimize the chances of a network request cooldown.  
 This can be stored either in a database, or in a simple object array, or a more advanced in-memory data structure, such as [Redis](https://redis.io/).
 
-Below is demonstrated how to load inventories.
-In [inventories.js](#inventories.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer.
+Below is demonstrated the basics of how to load inventories.  
+In [inventories.js](#inventories.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
