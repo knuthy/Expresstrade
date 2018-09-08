@@ -25,7 +25,16 @@ I recommend running it over https, with a free ssl certificate from [Letsencrypt
 
 Below is my example of a simple and basic secure Node.js server.
 ````javascript
-lets
+var https = require('https');
+
+// Server listen and ssl 
+var app = require('express')();
+var server = https.createServer({
+    key: fs.readFileSync('/PATH_TO_YOUR_PRIVATEKEY/privkey.pem'),
+    cert: fs.readFileSync('/PATH_TO_YOUR_CHAIN/fullchain.pem')
+},app);
+server.listen(3000);
+var io = require('socket.io').listen(server);
 ´´´´
 
 
