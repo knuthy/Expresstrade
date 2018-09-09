@@ -269,3 +269,6 @@ You can use the above methods and examples to create a website using WAX Express
 
 Error codes can be looked up [here](https://github.com/OPSkins/trade-opskins-api/issues/19#issuecomment-403122935)
 I recommend reading the [Trade.opskins.com](https://github.com/OPSkins/trade-opskins-api) API documentation, if you have any problems regarding the GET and POST requests, or if you wish to do other requests.
+
+
+*By Knuthy*
