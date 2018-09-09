@@ -23,7 +23,7 @@ socket.on('loadUserInventory', function(forceRefresh) {
 	} else {
 		// Removing the old cached inventory
 		clearInventory(socketuser.id64);
-		ET.ITrade.GetUserInventoryFromSteamId({steam_id: socketuser.id64}, (err, body) => {
+		ET.ITrade.GetUserInventoryFromSteamId({steam_id: user.id64}, (err, body) => {
 			if (err) {
 				return;
 			} else {
