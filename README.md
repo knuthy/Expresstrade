@@ -1,12 +1,13 @@
 # Integrating WAX Expresstrade using Node.js
 This tutorial is intended to teach how to integrate WAX Expresstrade, into any Node.js socket based web application, with preexisting basic knowledge about coding and serverstructure. 
-The explanations in this tutorial is also build upon implying, that you have previous knowledge or experience with developing or dealing with applications using the Steam Web API.
+The explanations in this tutorial is also build upon implying, that you have previous knowledge or experience with developing or dealing with applications using the Steam Web API.  
+This tutorial will only focus on the serverside. Everything needed to use WAX Expresstrade is shown and explained, but you will have to design and create the clientside yourself.
 
 ## Content
 Throughout this tutorial, we'll be using the following:
 
 - At least one [Opskins account](https://opskins.com/?loc=login&register) with a registered API key, and its 2FA code.  
-One account can hold unlimited amounts of digital items, so it's no longer required to have one account per 1000 items, as it was when Steam bots were required to run an online trading and or gambling platform. It still might be a good idea to have more than one bot account, to improve server performance. This tutorial uses only one account.
+One account can hold unlimited amounts of digital items, so it's no longer required to have one account per 1000 items, as it was when Steam bots were required to run an online trading or gambling platform. It still might be a good idea to have more than one bot account, to improve server performance. This tutorial uses only one account.
 
 - [Node.js](https://nodejs.org/en/) and NPM for managing packages  
 I suggest using Node.js 8.9.4 or higher for the best possible stability and package support
@@ -25,7 +26,7 @@ I suggest using Node.js 8.9.4 or higher for the best possible stability and pack
 
 ## Server basics
 Before we're getting into handling the API and start sending requests, we'll need a basic and stable Node.js server.  
-I recommend running it over https, with a free ssl certificate from [Letsencrypt](https://letsencrypt.org/). If you prefer running it non-secure for some reason, or dont wanna register a certificate, you can just run a simple http server.
+I recommend running it over https, with a free ssl certificate from [Letsencrypt](https://letsencrypt.org/). If you prefer running it non-secure for some reason, or dont want to register a certificate, you can just run a simple http server.
 
 Below is my example of a basic Node.js server.
 ```javascript
@@ -44,7 +45,7 @@ var io = socket.listen(server);
 ```
 
 ## Configuring Expresstrade and Opskins user authentication
-To be able to fetch user data, and send requests using the Opskins Trade API, we'll need to configure both the Express trade service and the Opskins user authentication API.
+To be able to fetch user data, and send requests using the Opskins Trade API, we'll need to configure both the Exprestrade service and the Opskins user authentication API.
 
 Below is the easiest way to do so.
 ```javascript
@@ -102,7 +103,7 @@ app.get('/logout', (req, res) => {
 	res.redirect('/');
 });
 ```
-The routes leading to the authentication code above, means that you must redirect your user to "YOURDOMAIN.COM/auth/opskins", to make it possible for them, to send a login request.
+The routes leading to the authentication code above, means that you must redirect your users to "YOURDOMAIN.COM/auth/opskins", to make it possible for them to send a login request.
 
 ## Registering after login
 After our user has logged in, by sending a request to "YOURDOMAIN.COM/auth/opskins", their data has been stored in our passport session, assigned to the socket id they requested the login from.  
@@ -126,17 +127,17 @@ All user-action-based code must be placed within the socket connection.
 ## Inventories and caching
 When you've created the basics of your website, with WAX Expresstrade integrated, you probably want to load either your own, your user's or both inventories.  
 Depending on how often you want to load an inventory, it might be a good idea to store each load as a cache, to reduce stress, improve loadtime and minimize the chances of a network request cooldown.  
-This can be stored either in a database, or in a simple object array, or a more advanced in-memory data structure, such as [Redis](https://redis.io/).
+This can be stored either in a database, in a simple object array, or a more advanced in-memory data structure, such as [Redis](https://redis.io/).
 
 Below is demonstrated the basics of how to load inventories.  
-In [inventories_cache.js](inventories_cache.js) is demonstrated how to load and cache inventories, depending on a refreshbuffer and a force refresh.
+In [inventories_cache.js](inventories_cache.js) is demonstrated how to load and cache inventories, depending on a force refresh.
 
-Please noitice that the examples below, use custom socket connection variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
-Notice also, that we access the user's Steam 64 ID by calling "socketuser.id64".
+Please noitice that the examples below, use custom socket communication variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
+Notice also, that we access the user's Steam 64 ID by calling "user.id64".
 ```javascript
 // User inventory, as from a user socket request.
 socket.on('loadUserInventory', function() {
-	ET.ITrade.GetUserInventoryFromSteamId({steam_id: socketuser.id64}, (err, body) => {
+	ET.ITrade.GetUserInventoryFromSteamId({steam_id: user.id64}, (err, body) => {
 		if (err) {
 			return;
 		} else {
@@ -202,16 +203,16 @@ If wanted, you can always filter inventory objects, based on either an item's na
 
 ## Sending and receiving tradeoffers
 When you've loaded either you own, your user's or both inventories, you might want to either send a tradeoffer, containing items from one or both sides, or be able to receive a tradeoffer from a user.  
-When sending an offer, you need to know which item ids you want to include. These ids could be the ones we fetched in the inventory loading step.  
+When sending an offer, you need to know which item ids you want to include. These ids could be the ones we fetched in the inventory loading part.  
 You might want your user to be able to choose between which of their and or your items, to be added to the tradeoffer you're sending. No matter how you delcare the item ids, both your and the recipient item ids should be stored in the same array.
 
 In the code below, I've made a random array of item ids, just to demonstrate how to send a tradeoffer.
 Please agaon noitice that the examples below, use custom socket connection variables, such as 'tradeSent' and 'error'. You will of course need to customize these variables to work together with your clientside.  
-Notice also, that we again access the user's Steam 64 ID by calling "socketuser.id64".  
+Notice also, that we again access the user's Steam 64 ID by calling "user.id64".  
 ```javascript
 var items = [12, 34, 56, 78, 90];
 socket.on('sendTrade', function() {
-	ET.ITrade.SendOfferToSteamId({steam_id: socketuser.id64, items: items.toString(), message: 'Knuthy'}, (err, body) => {
+	ET.ITrade.SendOfferToSteamId({steam_id: user.id64, items: items.toString(), message: 'Knuthy'}, (err, body) => {
 		if (err) {
 			return;
 		} else {
