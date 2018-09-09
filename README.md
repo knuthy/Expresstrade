@@ -271,4 +271,6 @@ Error codes can be looked up [here](https://github.com/OPSkins/trade-opskins-api
 I recommend reading the [Trade.opskins.com](https://github.com/OPSkins/trade-opskins-api) API documentation, if you have any problems regarding the GET and POST requests, or if you wish to do other requests.
 
 
+Proofs of origin and creation time for this repository can be found at the [Github API](https://api.github.com/repos/knuthy/Expresstrade)
+
 *By Knuthy*
