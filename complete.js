@@ -91,7 +91,7 @@ io.on('connection', socket => {
 		
 		// Is the user's inventory already cached?
 		cachedInventories.forEach(function(inventory) {
-			if (inv.steamId == socketuser.id64) {
+			if (inv.steamId == user.id64) {
 				cache = true;
 				inventoryCache = inventory.inv;
 			}
@@ -104,8 +104,8 @@ io.on('connection', socket => {
 			});
 		} else {
 			// Removing the old cached inventory
-			clearInventory(socketuser.id64);
-			ET.ITrade.GetUserInventoryFromSteamId({steam_id: socketuser.id64}, (err, body) => {
+			clearInventory(user.id64);
+			ET.ITrade.GetUserInventoryFromSteamId({steam_id: user.id64}, (err, body) => {
 				if (err) {
 					return;
 				} else {
@@ -127,7 +127,7 @@ io.on('connection', socket => {
 						});
 						// Caching the newly loaded inventory
 						cachedInventories.push({
-							steamId: socketuser.id64,
+							steamId: user.id64,
 							inv: inventory,
 							time: Date.now(),
 							cache: true
@@ -161,7 +161,7 @@ io.on('connection', socket => {
 			});
 		} else {
 			// Removing the old cached inventory
-			clearInventory(socketuser.id64);
+			cachedInventory = [];
 			ET.IUser.GetInventory((err, body) => {
 				if (err) {
 					return;
@@ -201,7 +201,7 @@ io.on('connection', socket => {
 	
 	
 	socket.on('sendTrade', function(items) {
-		ET.ITrade.SendOfferToSteamId({steam_id: socketuser.id64, items: items.toString(), message: 'Knuthy'}, (err, body) => {
+		ET.ITrade.SendOfferToSteamId({steam_id: user.id64, items: items.toString(), message: 'Knuthy'}, (err, body) => {
 			if (err) {
 				return;
 			} else {
