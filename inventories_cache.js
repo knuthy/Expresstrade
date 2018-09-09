@@ -9,7 +9,7 @@ socket.on('loadUserInventory', function(forceRefresh) {
 	
 	// Is the user's inventory already cached?
 	cachedInventories.forEach(function(inventory) {
-		if (inv.steamId == socketuser.id64) {
+		if (inv.steamId == user.id64) {
 			cache = true;
 			inventoryCache = inventory.inv;
 		}
@@ -22,7 +22,7 @@ socket.on('loadUserInventory', function(forceRefresh) {
 		});
 	} else {
 		// Removing the old cached inventory
-		clearInventory(socketuser.id64);
+		clearInventory(user.id64);
 		ET.ITrade.GetUserInventoryFromSteamId({steam_id: user.id64}, (err, body) => {
 			if (err) {
 				return;
@@ -45,7 +45,7 @@ socket.on('loadUserInventory', function(forceRefresh) {
 					});
 					// Caching the newly loaded inventory
 					cachedInventories.push({
-						steamId: socketuser.id64,
+						steamId: user.id64,
 						inv: inventory,
 						time: Date.now(),
 						cache: true
