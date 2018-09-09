@@ -1,7 +1,7 @@
 # Integrating WAX Expresstrade using Node.js
-This tutorial is intended to teach how to integrate WAX Expresstrade, into any Node.js socket based web application, with preexisting basic knowledge about coding and serverstructure. 
-The explanations in this tutorial is also build upon implying, that you have previous knowledge or experience with developing or dealing with applications using the Steam Web API.  
-This tutorial will only focus on the serverside. Everything needed to use WAX Expresstrade is shown and explained, but you will have to design and create the clientside yourself.
+This tutorial is intended to teach how to integrate WAX Expresstrade, into any Node.js socket based web application, with preexisting basic knowledge about coding and server structure. 
+The explanations in this tutorial is also built upon implying, that you have previous knowledge or experience with developing or dealing with applications using the Steam Web API.  
+This tutorial will only focus on the server-side. Everything needed to use WAX Expresstrade is shown and explained, but you will have to design and create the client-side yourself.
 
 ## Content
 Throughout this tutorial, we'll be using the following:
@@ -26,7 +26,7 @@ I suggest using Node.js 8.9.4 or higher for the best possible stability and pack
 
 ## Server basics
 Before we're getting into handling the API and start sending requests, we'll need a basic and stable Node.js server.  
-I recommend running it over https, with a free ssl certificate from [Letsencrypt](https://letsencrypt.org/). If you prefer running it non-secure for some reason, or dont want to register a certificate, you can just run a simple http server.
+I recommend running it over https, with a free ssl certificate from [Letsencrypt](https://letsencrypt.org/). If you prefer running it non-secure for some reason, or don't want to register a certificate, you can just run a simple http server.
 
 Below is my example of a basic Node.js server.
 ```javascript
@@ -62,7 +62,7 @@ const ET = new ExpressTrade({
   pollInterval: 'HOW_OFTEN_YOU_WANT_TO_POLL' // In ms, example "5000".
 });
 
-// Delcaring basic site info, and creating an Opskins session.
+// Delcaring basic site info and creating an Opskins session.
 let OpskinsAuth = new opAuth.init({
     name: 'YOUR_SITE_NAME', // Site name displayed to users on logon
     returnURL: 'http://YOURDOMAIN.COM/auth/opskins/authenticate', // Your return route
@@ -107,7 +107,7 @@ The routes leading to the authentication code above, means that you must redirec
 
 ## Registering after login
 After our user has logged in, by sending a request to "YOURDOMAIN.COM/auth/opskins", their data has been stored in our passport session, assigned to the socket id they requested the login from.  
-We then need to be able to identify our user troughout the actions we want to perform, based on the socket connection. If we can't identify our user, we cant fetch their data or send any userrelated request to the Opskins Trade API.
+We then need to be able to identify our user throughout the actions we want to perform, based on the socket connection. If we can't identify our user, we cant fetch their data or send any user related request to the Opskins Trade API.
 
 So when the user contacts the socket after the login, we'll have to assign their data to their session.  
 Below is how I would do so.
@@ -126,13 +126,13 @@ All user-action-based code must be placed within the socket connection.
 
 ## Inventories and caching
 When you've created the basics of your website, with WAX Expresstrade integrated, you probably want to load either your own, your user's or both inventories.  
-Depending on how often you want to load an inventory, it might be a good idea to store each load as a cache, to reduce stress, improve loadtime and minimize the chances of a network request cooldown.  
+Depending on how often you want to load an inventory, it might be a good idea to store each load as a cache, to reduce stress, improve load time and minimize the chances of a network request cooldown.  
 This can be stored either in a database, in a simple object array, or a more advanced in-memory data structure, such as [Redis](https://redis.io/).
 
 Below is demonstrated the basics of how to load inventories.  
 In [inventories_cache.js](inventories_cache.js) is demonstrated how to load and cache inventories, depending on a force refresh.
 
-Please noitice that the examples below, use custom socket communication variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your clientside.  
+Please notice that the examples below, use custom socket communication variables, such as 'loadUserInventory', 'userInventory' and 'error'. You will of course need to customize these variables to work together with your client-side.  
 Notice also, that we access the user's Steam 64 ID by calling "user.id64".
 ```javascript
 // User inventory, as from a user socket request.
@@ -204,10 +204,10 @@ If wanted, you can always filter inventory objects, based on either an item's na
 ## Sending and receiving tradeoffers
 When you've loaded either you own, your user's or both inventories, you might want to either send a tradeoffer, containing items from one or both sides, or be able to receive a tradeoffer from a user.  
 When sending an offer, you need to know which item ids you want to include. These ids could be the ones we fetched in the inventory loading part.  
-You might want your user to be able to choose between which of their and or your items, to be added to the tradeoffer you're sending. No matter how you delcare the item ids, both your and the recipient item ids should be stored in the same array.
+You might want your user to be able to choose between which of their and or your items, to be added to the tradeoffer you're sending. No matter how you declare the item ids, both your and the recipient item ids should be stored in the same array.
 
 In the code below, I've made a random array of item ids, just to demonstrate how to send a tradeoffer.
-Please agaon noitice that the examples below, use custom socket connection variables, such as 'tradeSent' and 'error'. You will of course need to customize these variables to work together with your clientside.  
+Please again notice that the examples below, use custom socket connection variables, such as 'tradeSent' and 'error'. You will of course need to customize these variables to work together with your client-side.  
 Notice also, that we again access the user's Steam 64 ID by calling "user.id64".  
 ```javascript
 var items = [12, 34, 56, 78, 90];
@@ -264,7 +264,7 @@ ET.on('offerReceived', (_offer) => {
 ```
 
 ## Summary
-You can use the above methods and examples to create a website using WAX Expresstrade, to be able to receive userdata from Opskins and send and receive tradeoffers.  
+You can use the above methods and examples to create a website using WAX Expresstrade, to be able to receive user data from Opskins and send and receive tradeoffers.  
 [complete.js](complete.js) contains all the above steps, in one complete version, if you wish to see and or use the structure.
 
 Error codes can be looked up [here](https://github.com/OPSkins/trade-opskins-api/issues/19#issuecomment-403122935)
